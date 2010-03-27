@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title%} Blog {{title}} {% endblock %}
+
+{% block content %}
+<a href="/blog/feeds/posts"><img src="/Static/Images/rss_feed.png" alt="Rss Feed"></a>
+<br/><br/>
+{% for post in posts %}
+<div style="margin-bottom:50px;">
+	<a style="font-weight:bold;color:#046380;" href="{{post.get_absolute_url}}">{{post.title}}</a>
+	<br/><br/>
+	<span style="font-size:.7em;color:#9F0B00;">
+	{{post.date_created|date:'D, M dS, Y'}}
+	</span>
+	<br/>
+	{{post.body|safe}}
+	<br/><br/>
+	<span style="color:gray;font-size:.9em;">
+		&lt;{{post.tag_urls|safeseq|join:", "}}&gt;
+	</span>
+	
+</div>
+{% endfor %}
+<a href="archive">Older Posts</a>
+<br/><br/>
+{% endblock %}
