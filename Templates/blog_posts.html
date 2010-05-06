@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block title%} Blog {{title}} {% endblock %}
 
+{% load comments %}
+
 {% block content %}
 <a href="/blog/feeds/posts"><img src="/Static/Images/rss_feed.png" alt="Rss Feed"></a>
 <br/><br/>
@@ -18,8 +20,45 @@
 		&lt;{{post.tag_urls|safeseq|join:", "}}&gt;
 	</span>
 	
+	<br><br>
+
+	
+	<h3>Comments</h3>
+	{% get_comment_count for post as comment_count %}
+	{{comment_count}} comments
+	<br><br>
+	<a class="PostCommentLink" href="" onclick="return false;">Leave a Comment</a>
+	<div class="PostCommentForm" style="display:none;">
+		{% render_comment_form for post %}
+	</div>
+	<br><br>
+	{% get_comment_list for post as comment_list %}
+	{% for comment in comment_list %}
+	    <div>
+			<a href="{{comment.url}}" rel="external">{{comment.user_name}}</a>
+			<br />
+			<br />
+			<span style="font-size:.7em;color:#9F0B00;">
+				{{comment.submit_date}}
+			</span>
+			<br />
+			{{comment.comment}}
+		</div>
+	{% endfor %}
+	
 </div>
 {% endfor %}
 <a href="archive">Older Posts</a>
+
+
 <br/><br/>
+
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+		$('.PostCommentLink').click(function() {
+			$('.PostCommentForm').toggle();
+		});
+		
+	});
+</script>
 {% endblock %}
