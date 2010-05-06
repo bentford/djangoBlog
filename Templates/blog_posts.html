@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block title%} Blog {{title}} {% endblock %}
 
+{% load comments %}
+
 {% block content %}
 <a href="/blog/feeds/posts"><img src="/Static/Images/rss_feed.png" alt="Rss Feed"></a>
 <br/><br/>
@@ -14,12 +16,21 @@
 	<br/>
 	{{post.body|safe}}
 	<br/><br/>
-	<span style="color:gray;font-size:.9em;">
+	<span style="font-size:.9em;" class="tags">
 		&lt;{{post.tag_urls|safeseq|join:", "}}&gt;
 	</span>
 	
+	<br><br>
+	{% get_comment_count for post as comment_count %}
+	<a class="blog" href="{{post.get_absolute_url}}#Comments">
+		{{comment_count}} comments
+	</a>
 </div>
 {% endfor %}
-<a href="archive">Older Posts</a>
-<br/><br/>
+<a href="archive" class="blog">Older Posts</a>
+
+
+<br/><br/><br />
+
+
 {% endblock %}
