@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title%} Blog {{title}} {% endblock %}
+
+{% load comments %}
+
+{% block content %}
+<a href="/blog/feeds/posts"><img src="/Static/Images/rss_feed.png" alt="Rss Feed"></a>
+<br/><br/>
+{% for post in posts %}
+<div style="margin-bottom:50px;">
+	<a style="font-weight:bold;color:#231F20;" href="{{post.get_absolute_url}}">{{post.title}}</a>
+	<br/><br/>
+	<span style="font-size:.7em;color:#9F0B00;">
+	{{post.date_created|date:'D, M dS, Y'}}
+	</span>
+	<br/>
+	{{post.body|safe}}
+	<br/><br/>
+	<span style="font-size:.9em;" class="tags">
+		&lt;{{post.tag_urls|safeseq|join:", "}}&gt;
+	</span>
+	
+	<br><br>
+
+	{% get_comment_count for post as comment_count %}
+	<h3 class="blog" style="float: left;">Comments</h3>
+	<div style="float: left; font-style:italic; line-height:60px; margin-left:390px;">{{comment_count}} comments</div>
+	<div style="clear: both;"></div>
+	
+
+	<a name="Comments" id="PostCommentLink" href="" onclick="return false;" class="blog">
+		Leave a Comment
+	</a>
+<br />
+<br />
+<hr/>
+	<div class="PostCommentForm" style="display:none;">
+		{% render_comment_form for post %}
+	</div>
+	<br><br>
+	{% get_comment_list for post as comment_list %}
+	{% for comment in comment_list %}
+	    <div>
+			<div style="display:block; float: left; width:400px; margin-right:100px;">
+				<a href="{{comment.url}}" class="username">
+					{{comment.user_name}}
+				</a>
+			</div>
+			<div style="font-size:.7em;color:#9F0B00; float: left;">
+				{{comment.submit_date|date:'D, M dS, Y'}}
+			</div>
+			<br style="clear: both;"/>
+			<div style="width:650px;">
+				{{comment.comment}}
+			</div>
+		</div>
+		<br />
+		<br />
+		
+	{% endfor %}
+
+</div>
+{% endfor %}
+<a href="archive" class="blog">Older Posts</a>
+
+
+<br/><br/>
+
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+		
+		$('#PostCommentLink').click(function() {
+			$('.PostCommentForm').toggle();
+		});
+		
+		//if( window.location.hash == '#Comments' )
+		//	$('.PostCommentForm').show()
+		
+	});
+</script>
+{% endblock %}

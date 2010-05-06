@@ -16,7 +16,7 @@ def posts_for_year_month(request, year, month):
     
 def posts_for_year_month_slug(request, year, month, slug):
     posts = Post.objects.filter(date_created__year=year, date_created__month=month,slug=slug).order_by('-date_created')
-    return render_to_response('blog_posts.html', {'title':'Posts', 'posts':posts, 'selected_menu':'blog'})
+    return render_to_response('blog_post_with_comments.html', {'title':'Posts', 'posts':posts, 'selected_menu':'blog'})
 
 def tags(request, tag):
     posts = Tag.objects.get(name=tag).post_set.all()
